@@ -1,57 +1,65 @@
 'use strict';
 
-const YOUTUBE_SEARCH_URL = "https://www.googleapis.com/youtube/v3/search";
+const YOUTUBE_SEARCH_URL = 'https://www.googleapis.com/youtube/v3/search';
 
 const STORE = {
-    
-    items: [],
+  items: [],
 };
 
-function getDataFromYoutube(searchTerm, callback) { 
-    const query = {
-        part: 'snippet',
-        key: 'AIzaSyBTYOGG9oxUU2Ij2c-x7sTOS3wTgoHk298',
-        q: `${searchTerm} `
-        per_page: 10,
-    }
-    $.getJSON(YOUTUBE_SEARCH_URL, query, callback);
+function getDataFromYoutube(searchTerm) { 
+  const query = {
+    part: 'snippet',
+    key: 'AIzaSyBTYOGG9oxUU2Ij2c-x7sTOS3wTgoHk298',
+    q: `${searchTerm} `
+  };
+  $.getJSON(YOUTUBE_SEARCH_URL, query, function(data) {
+		STORE.items = data.items;
+		render();
+	});
 }
 
 function render() { 
-    // check if STORE contains items to show
-    // call another function to create HTML
-    if (STORE.items.length > 0) {
-       displayResults();
-
+  // check if STORE contains items to show
+  // call another function to create HTML
+  if (STORE.items.length > 0) {
+    displayResults();
+  }
 }
-}
 
-function generateHTML(items) {
-    // create and pass dynamic HTML
-    return `
+function generateHTML(item) {
+	// create and pass dynamic HTML
+	console.log(item);
+  return `
     <div>
-      <img src='${items.snippet.thumbnails.medium.url}'>
-      </div>`
-      console.log(items);
-    }
-
+      <img src='${item.snippet.thumbnails.medium.url}'>
+      </div>`;
+}
 
 function generateCollection() {
-      // generate a collection of strings
-          const results = STORE.items.map((item)=>{
-             generateHTML(a)
-    });
-    $('.js-search-results').html(results);
+  // generate a collection of strings
+  const results = STORE.items.map(generateHTML);
+	console.log(results);
+  return results.join('');
 }
 
 function displayResults() {
-    // add items to DOM
-    const dynamicHTML = generateCollection();
-    $('.js-search-results').html(dynamicHTML);
+  // add items to DOM
+	const dynamicHTML = generateCollection();
+	console.log(dynamicHTML);
+  $('.js-search-results').html(dynamicHTML);
 }
 
 function submitListener() {
-    // listen to submit button
+  $('.js-search-form').on('submit', function(e) {
+		e.preventDefault;
+
+    const searchTarget = $(e.currentTarget).find('.js-query');
+    const search = searchTarget.val();
+
+    searchTarget.val('');
+
+    getDataFromYoutube(search);
+  });
 }
 
 $(submitListener);
