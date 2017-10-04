@@ -14,6 +14,7 @@ function getDataFromYoutube(searchTerm) {
   };
   $.getJSON(YOUTUBE_SEARCH_URL, query, function(data) {
 		STORE.items = data.items;
+		console.log(STORE.items);
 		render();
 	});
 }
@@ -29,9 +30,13 @@ function render() {
 function generateHTML(item) {
 	// create and pass dynamic HTML
 	console.log(item);
+	console.log(item.id.videoId);
   return `
-    <div>
-      <img src='${item.snippet.thumbnails.medium.url}'>
+		<div class="thumbnail-container">
+			<a href="https://youtube.com/watch?v=${item.id.videoId}">
+				<img src='${item.snippet.thumbnails.medium.url}'>
+			</a>
+			<p><a href="https://youtube.com/channel/${item.snippet.channelId}">${item.snippet.channelTitle}</a></p>
       </div>`;
 }
 

@@ -1,0 +1,18 @@
+h1 {
+    text-align: center;
+}
+
+form {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.thumbnail-container {
+    width: 1200px;
+    padding: 10px;
+    margin: 10px;
+    background-color: rgba(0,0,0,0.1);
+}
+
+img {
+    border: 1px solid black;
